@@ -59,6 +59,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2022),
+        lastDate: DateTime(2024));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -93,12 +108,17 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            ElevatedButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Current date: ' + selectedDate.toString()),
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              'Select target calories:',
+            ),
+            new TextField(
+              decoration: new InputDecoration(labelText: "Enter your number"),
+              keyboardType: TextInputType.number,
+              maxLength: 4,
             ),
           ],
         ),
